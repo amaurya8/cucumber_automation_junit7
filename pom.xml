@@ -12,24 +12,27 @@
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <allure.version>2.19.0</allure.version>
+        <allure.maven.version>2.11.2</allure.maven.version>
+        <aspectj.version>1.9.9.1</aspectj.version>
+        <allure.junit5.version>2.14.0</allure.junit5.version>
+        <aspectj.version>1.9.9.1</aspectj.version>
     </properties>
 
     <dependencies>
-<!--        &lt;!&ndash; Cucumber Java &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>io.cucumber</groupId>-->
-<!--            <artifactId>cucumber-java</artifactId>-->
-<!--            <version>7.14.0</version>-->
-<!--        </dependency>-->
+        <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-maven -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-maven</artifactId>
+            <version>2.8</version>
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/io.qameta.allure/allure-cucumber7-jvm -->
+        <dependency>
+            <groupId>io.qameta.allure</groupId>
+            <artifactId>allure-cucumber7-jvm</artifactId>
+            <version>2.29.0</version>
+        </dependency>
 
-<!--        &lt;!&ndash; Cucumber JUnit 5 Engine &ndash;&gt;-->
-<!--        <dependency>-->
-<!--            <groupId>io.cucumber</groupId>-->
-<!--            <artifactId>cucumber-junit-platform-engine</artifactId>-->
-<!--            <version>7.14.0</version>-->
-<!--        </dependency>-->
-
-        <!-- https://mvnrepository.com/artifact/io.cucumber/cucumber-java -->
         <dependency>
             <groupId>io.cucumber</groupId>
             <artifactId>cucumber-java</artifactId>
@@ -80,25 +83,24 @@
             <artifactId>maven-cucumber-reporting</artifactId>
             <version>5.8.2</version>
         </dependency>
+        <dependency>
+            <groupId>org.aspectj</groupId>
+            <artifactId>aspectjweaver</artifactId>
+            <version>${aspectj.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.aventstack</groupId>
+            <artifactId>extentreports</artifactId>
+            <version>5.0.9</version> <!-- Check for the latest version -->
+        </dependency>
+        <!-- https://mvnrepository.com/artifact/tech.grasshopper/extentreports-cucumber7-adapter -->
+        <dependency>
+            <groupId>tech.grasshopper</groupId>
+            <artifactId>extentreports-cucumber7-adapter</artifactId>
+            <version>1.14.0</version>
+        </dependency>
 
     </dependencies>
-<!--    <build>-->
-<!--        <testResources>-->
-<!--            <testResource>-->
-<!--                <directory>src/test/resources</directory>-->
-<!--                <includes>-->
-<!--                    <include>**/*.feature</include>-->
-<!--                </includes>-->
-<!--            </testResource>-->
-<!--        </testResources>-->
-<!--        <plugins>-->
-<!--                <plugin>-->
-<!--                    <groupId>org.apache.maven.plugins</groupId>-->
-<!--                    <artifactId>maven-surefire-plugin</artifactId>-->
-<!--                    <version>3.5.0</version>-->
-<!--                </plugin>-->
-<!--        </plugins>-->
-<!--    </build>-->
     <build>
         <plugins>
             <plugin>
@@ -106,10 +108,18 @@
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>3.5.0</version>
                 <configuration>
-                    <systemPropertyVariables>
-                        <cucumber.features>classpath:features</cucumber.features>
-                        <cucumber.glue>com.aisa.cucumber7.stepdefinitions</cucumber.glue>
-                    </systemPropertyVariables>
+                    <includes>
+                        <include>**/TempRunner.java</include> <!-- Include your runner class -->
+                    </includes>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>io.qameta.allure</groupId>
+                <artifactId>allure-maven</artifactId>
+                <version>${allure.maven.version}</version>
+                <configuration>
+                    <reportVersion>2.4.1</reportVersion>
+                        <reportDirectory>${basedir}/target/allure-report</reportDirectory>
                 </configuration>
             </plugin>
         </plugins>
