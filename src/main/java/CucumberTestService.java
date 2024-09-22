@@ -1,6 +1,7 @@
 import io.cucumber.core.cli.Main;
 import net.masterthought.cucumber.Configuration;
 import net.masterthought.cucumber.ReportBuilder;
+//import org.apache.poi.ss.formula.functions.T;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -13,10 +14,11 @@ import java.util.Properties;
 public class CucumberTestService {
 
     public void runTests() {
+        TestReportService testReportService = new TestReportService();
         Properties props = loadCucumberPropertiesFile();
         String[] cucumberArgs = buildCucumberArguments(props);
         runCucumberTests(cucumberArgs);
-        generateCucumberReport();
+        testReportService.generateCucumberReport("Cucumber Test Report for Data Lake");
     }
 
     // Load cucumber.properties file
@@ -67,8 +69,8 @@ public class CucumberTestService {
         cucumberArgsList.add("junit:" + junitReport);
         cucumberArgsList.add("--plugin");
         cucumberArgsList.add("rerun:" + rerunPath);
-        cucumberArgsList.add("--plugin");
-        cucumberArgsList.add("io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm");  // Allure plugin
+//        cucumberArgsList.add("--plugin");
+//        cucumberArgsList.add("io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm");  // Allure plugin
         cucumberArgsList.add("--threads");
         cucumberArgsList.add(threads);
         cucumberArgsList.add("--tags");
@@ -110,28 +112,5 @@ public class CucumberTestService {
     // Run Cucumber tests
     private void runCucumberTests(String[] cucumberArgs) {
         Main.run(cucumberArgs, Thread.currentThread().getContextClassLoader());
-    }
-
-    // Masterthought report
-    private void generateCucumberReport() {
-        try {
-            File reportOutputDirectory = new File("target/cucumber-reports");
-            List<String> jsonFiles = Arrays.asList("target/cucumber-reports/Cucumber.json");
-
-            String projectName = "Cucumber Project";
-
-            Configuration configuration = new Configuration(reportOutputDirectory, projectName);
-
-            //  Setting additional metadata like OS, Browser, etc.
-            configuration.addClassifications("Platform", System.getProperty("os.name"));
-            configuration.addClassifications("Java Version", System.getProperty("java.version"));
-
-            ReportBuilder reportBuilder = new ReportBuilder(jsonFiles, configuration);
-            reportBuilder.generateReports();
-
-            System.out.println("Cucumber Report generated at: " + reportOutputDirectory.getAbsolutePath());
-        } catch (Exception e) {
-            System.err.println("Error generating Cucumber report: " + e.getMessage());
-        }
     }
 }
