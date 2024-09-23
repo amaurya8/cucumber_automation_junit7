@@ -1,7 +1,6 @@
 import io.cucumber.core.cli.Main;
 import net.masterthought.cucumber.Configuration;
 import net.masterthought.cucumber.ReportBuilder;
-//import org.apache.poi.ss.formula.functions.T;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -69,8 +68,6 @@ public class CucumberTestService {
         cucumberArgsList.add("junit:" + junitReport);
         cucumberArgsList.add("--plugin");
         cucumberArgsList.add("rerun:" + rerunPath);
-//        cucumberArgsList.add("--plugin");
-//        cucumberArgsList.add("io.qameta.allure.cucumber7jvm.AllureCucumber7Jvm");  // Allure plugin
         cucumberArgsList.add("--threads");
         cucumberArgsList.add(threads);
         cucumberArgsList.add("--tags");
